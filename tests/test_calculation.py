@@ -197,6 +197,7 @@ def test_register_duplicate():
     assert "Calculation type 'add' is already registered." in str(exc_info.value)
 
 # toString tests
+# note -- these methods belong to Calculation. I'm not testing every subclass when none modify the method"
 
 @patch.object(Operation, 'add', return_value=5.0)
 def test_str_method(mock_addition):
@@ -221,4 +222,37 @@ def test_repr_method():
     expected_repr = f"{AddCalculation.__name__}(x={float(x)}, y={float(y)})"
     assert calc_repr == expected_repr
 
+# parameterized tests
+# note -- there is no coverage gap here, but this is required for the assignment
 
+@pytest.mark.parametrize("calc_type, x, y, expected_result", [
+    ('add', -5, 10.2, 5.2),
+    ('subtract', 0, 12.0, -12.0),
+    ('multiply', 0, 5, 0.0),
+    ('divide', 4, 0.25, 16.0),
+])
+@patch.object(Operation, 'add')
+@patch.object(Operation, 'subtract')
+@patch.object(Operation, 'multiply')
+@patch.object(Operation, 'divide')
+def test_execute_parameterized(
+        mock_division, mock_multiplication, mock_subtraction, mock_addition,
+        calc_type, x, y, expected_result
+):
+    """Parameterized test for the execute method across Calculation subclasses"""
+    match calc_type:
+        case 'add':
+            mock = mock_addition
+        case 'subtract':
+            mock = mock_subtraction
+        case 'multiply':
+            mock = mock_multiplication
+        case 'divide':
+            mock = mock_division
+    mock.return_value = expected_result
+
+    calc = CalculationFactory.create_calculation(calc_type, x, y)
+    result = calc.execute()
+
+    mock.assert_called_once_with(x, y)
+    assert result == expected_result
