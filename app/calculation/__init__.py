@@ -10,7 +10,8 @@ class Calculation(ABC):
             self.x: float = float(x)
             self.y: float = float(y)
         except ValueError as e:
-            raise e("Operands <x>, <y> must be float-parsible")
+            e.msg = "Operands <x>, <y> must be float-parsible"
+            raise e
 
     @abstractmethod
     def execute(self) -> float:
@@ -42,7 +43,7 @@ class CalculationFactory:
         calculation_type_lower = calculation_type.lower()
         calculation_class = cls._calculations.get(calculation_type_lower)
         if not calculation_class:
-            available_types = ', '.join(cls_calculations.keys())
+            available_types = ', '.join(cls._calculations.keys())
             raise ValueError(f"Unsupported command: '{calculation_type}'. Available types: {available_types}")
         return calculation_class(x, y)
 

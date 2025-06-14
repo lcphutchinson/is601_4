@@ -1,7 +1,7 @@
 """ tests/test_operations.py """
 import pytest
 from typing import Union
-from app.operations import Operation
+from app.operation import Operation
 
 Number = Union[int, float]
 
@@ -25,8 +25,8 @@ Number = Union[int, float]
         ]
 )
 def test_add(x: Number, y: Number, expected: Number) -> None:
-    """Test arithmetic 'add' from Operations."""
-    result = Operations.add(x, y)
+    """Test arithmetic 'add' from Operation."""
+    result = Operation.add(x, y)
     assert result == expected, f"Expected {expected} from add({x}, {y}). Got {result}"
 
 @pytest.mark.parametrize(
@@ -51,8 +51,8 @@ def test_add(x: Number, y: Number, expected: Number) -> None:
         ]
 )
 def test_subtract(x: Number, y: Number, expected: Number) -> None:
-    """Test arithmetic 'subtract' from Operations."""
-    result = Operations.subtract(x, y)
+    """Test arithmetic 'subtract' from Operation."""
+    result = Operation.subtract(x, y)
     assert result == expected, f"Expected {expected} from subtract({x}, {y}). Got {result}"
 
 @pytest.mark.parametrize(
@@ -77,8 +77,8 @@ def test_subtract(x: Number, y: Number, expected: Number) -> None:
         ]
 )
 def test_multiplication(x: Number, y: Number, expected: Number) -> None:
-    """Test arithmetic 'multiply' from Operations."""
-    result = Operations.multiply(x, y)
+    """Test arithmetic 'multiply' from Operation."""
+    result = Operation.multiply(x, y)
     assert result == expected, f"Expected {expected} from multiply({x}, {y}). Got {result}"
 
 @pytest.mark.parametrize(
@@ -103,6 +103,6 @@ def test_multiplication(x: Number, y: Number, expected: Number) -> None:
         ]
 )
 def test_division(x: Number, y: Number, expected: Number) -> None:
-    """Test arithmetic 'divide' from Operations"""
-    result = Operations.divide(x, y)
+    """Test arithmetic 'divide' from Operation"""
+    result = Operation.divide(x, y)
     assert result == expected, f"Expected {expected} from divide({x}, {y}). Got {result}"
