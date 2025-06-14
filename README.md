@@ -1,5 +1,5 @@
-## SU25 IS601-850 Module 3: Object-Oriented Design & Parameterized Testing
-![Coverage Badge](https://github.com/lcphutchinson/is601_3/actions/workflows/ci.yml/badge.svg)
+## SU25 IS601-850 Module 4: Intro to Design Patterns
+![Coverage Badge](https://github.com/lcphutchinson/is601_4/actions/workflows/ci.yml/badge.svg)
 
 A module of Web Systems Development, by Keith Williams
 
@@ -212,7 +212,7 @@ Launch the calculator with Python:
 python3 main.py
 ```
 
-Module 3's Calculator supports four operations
+Module 3's Calculator supports four arithmetic operations
 
 ```bash
 add \<x\> \<y\>: Adds two operands, x and y.
@@ -224,23 +224,61 @@ divide \<x\> \<y\>: Divides a non-zero operand y from another operand x.
 After each valid command, a prefaced result value will be printed to the terminal, followed by another prompt:
 
 ```bash
-$: add 2 3
-Result: 5
-$: 
+>>: add 2 3
+Result: AddCalculation: 2.0 Add 3.0 = 5.0
+>>: 
 ```
 
 If a command is not parsable or otherwise invalid, an error message will be shown, but the program will not terminate:
 
 ```bash
-$: nonsense
+>>: nonsense
 Error: Invalid Command Syntax. Expected <command> <x> <y>
-$:
+>>:
+```
+
+New in v.1.4: Use the special command 'history' to display a log of operations from this session.
+```bash
+>>: history
+Calculation History
+-------------------
+1. AddCalculation: 2.0 Add 3.0 = 5.0
+>>:
+```
+
+To display a full command list with more examples, use the special command 'help'
+```bash
+>>: help
+
+Python Calculator REPL
+----------------------
+Usage:
+    <command> <x> <y>
+    - Perform an arithmetic calculation <command> on operands <x> and <y>
+    - All operands must be float-parsible (integer or decimal)
+    - Supported commands:
+        add     : Adds two operands
+        subtract: Subtracts operand <y> from <x>
+        multiply: Multiplies two operands
+        divide  : Divides operand <x> by <y>
+
+Special Commands:
+    exit    : Exit the calculator
+    help    : Displays this help message
+    history : Displays a calculation history for this session
+
+Examples:
+    add 2 3
+    subtract 4.5 2
+    multiply 3 4
+    divide 12 6
+    exit
 ```
 
 To exit the program, type the command `exit`:
 
 ```bash
-$: exit
+>>: exit
 Thank you for using Python REPL Calculator. Exiting...
 you@yourPC:~/is601_3
 ```
