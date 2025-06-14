@@ -51,7 +51,6 @@ def display_history(history: list[Calculation]) -> None:
         print("-------------------")
         for idx, calculation in enumerate(history, start=1):
             print(f"{idx}. {calculation}")
-        print("\n")
 
 def calculator() -> None:
     """Launches the REPL"""
@@ -62,16 +61,15 @@ def calculator() -> None:
 
     while True:
         try:                                # Fetch the user input
-            user_input = input(">> ")
+            user_input = input(">>: ")
         except KeyboardInterrupt:           # Handle ctrl+c exit
             print("\nKeyboard interrupt detected. Exiting...")
-            break
+            sys.exit(0)
         except EOFError:                    # Handle ctrl+d exit
             print("\nEOF detected. Exiting...")
-            break
-            pass
+            sys.exit(0)
         if not user_input:                  # Skip empty inputs
-            continue
+            continue # pragma: no cover
         match user_input.strip().split():
             case ["exit"]:
                 print("Thank you for using Python REPL Calculator. Exiting...")
@@ -81,24 +79,25 @@ def calculator() -> None:
             case ["history"]:
                 display_history(history)
             case [command, x, y]:
-                try:                        # Parse and execute
+                try:                        # Parse inputs
                     calculation = CalculationFactory.create_calculation(command, x, y)
-                    result = calculation.execute()
                 except ValueError as e:     # Handle bad commands/operands
                     print(f"Error: {e}")
                     continue
+                try:                        # Execute calculation
+                    result = calculation.execute()
                 except ZeroDivisionError:   # Handle zero divisor 
                     print("Error: divide <x> <y> requires non-zero divisor <y>")
                     continue
                 except Exception as e:      # Handle unforseen errors
                     print(f"Unforseen Error: {e}")
-                    continue
+                    sys.exit(0)
 
                 result_str: str = f"{calculation}"
                 print(f"Result: {result_str}")
 
                 history.append(calculation)
-            case _:                         # Handle bad input strings
+            case _:                         # Handle bad input signatures
                 print("Error: Invalid Command Syntax. Expected <command> <x> <y>.")
 
 if __name__ == "__main__":
