@@ -1,10 +1,10 @@
 """This module provides the primary REPL interface and handles all IO for the Calculator application"""
 
 import sys
-from ..operations.operations import Operations
+from app.calculation import Calculation, CalculationFactory
 
-# Version string for the project: in global only for accessibility
-def version: str = "v.1.4"
+# Version string for the project: global only for ease of editing
+version: str = "v.1.4"
 
 def display_help() -> None:
     """Displays the command syntax and a list of valid operations, including examples."""
@@ -32,11 +32,10 @@ Examples:
     multiply 3 4
     divide 12 6
     exit
-
     """
     print(help_message)
 
-def display_history(history: List[calculation]) -> None:
+def display_history(history: list[Calculation]) -> None:
     """
     Displays the calculation history for this session.
 
@@ -57,7 +56,7 @@ def display_history(history: List[calculation]) -> None:
 def calculator() -> None:
     """Launches the REPL"""
     
-    history: List[Calculation] = []
+    history: list[Calculation] = []
     print(f"Welcome to Python REPL Calculator, {version}")
     print("Type 'help' for usage information or 'exit' to quit")
 
@@ -73,27 +72,30 @@ def calculator() -> None:
             pass
         if not user_input:                  # Skip empty inputs
             continue
-        match user_input.strip().lower().split():
+        match user_input.strip().split():
             case ["exit"]:
                 print("Thank you for using Python REPL Calculator. Exiting...")
                 break
             case ["help"]:
                 display_help()
             case ["history"]:
-                display_history()
+                display_history(history)
             case [command, x, y]:
                 try:                        # Parse and execute
                     calculation = CalculationFactory.create_calculation(command, x, y)
                     result = calculation.execute()
                 except ValueError as e:     # Handle bad commands/operands
                     print(f"Error: {e}")
+                    continue
                 except ZeroDivisionError:   # Handle zero divisor 
                     print("Error: divide <x> <y> requires non-zero divisor <y>")
+                    continue
                 except Exception as e:      # Handle unforseen errors
                     print(f"Unforseen Error: {e}")
+                    continue
 
                 result_str: str = f"{calculation}"
-                print(f"Result: {result_str}\n")
+                print(f"Result: {result_str}")
 
                 history.append(calculation)
             case _:                         # Handle bad input strings
