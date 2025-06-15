@@ -1,4 +1,4 @@
-## SU25 IS601-850 Module 3: Object-Oriented Design & Parameterized Testing
+## SU25 IS601-850 Module 4: Object-Oriented Design & Parameterized Testing
 ![Coverage Badge](https://github.com/lcphutchinson/is601_3/actions/workflows/ci.yml/badge.svg)
 
 A module of Web Systems Development, by Keith Williams
